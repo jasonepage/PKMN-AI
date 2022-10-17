@@ -10,7 +10,7 @@ def main():
     initializePyAutoGUI()
     p1 = Process(target=checkForWarnings)
     p1.start()
-    p2 = Process(target=checkForEncounter(2, 'route119'))
+    p2 = Process(target=checkForEncounter(0, 'route230'))
     p2.start()
 
 
@@ -25,7 +25,7 @@ def checkForWarnings():
             warning()
 
 
-def checkForEncounter(method, hunt):
+def checkForEncounter(method, hunt= None):
     if method == 0:
         singles_hunt(hunt)
 

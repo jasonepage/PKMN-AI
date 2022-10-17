@@ -5,7 +5,8 @@ from events import *
 def singles_hunt(hunt):
     while True:
         run_button = pyautogui.locateCenterOnScreen('images/Events/run_button2.PNG', confidence=0.8, region=(0,0, 750, 1500))
-        check_location = pyautogui.locateCenterOnScreen(f'images\Hunts\{hunt}.PNG', confidence=0.5)
+        if hunt is not None:
+            check_location = pyautogui.locateCenterOnScreen(f'images\Hunts\{hunt}.PNG', confidence=0.5)
 
         # Run Away
         if run_button is not None:
@@ -21,6 +22,7 @@ def singles_hunt(hunt):
 
 
 def hordes_hunt(hunt):
+    # TODO: Finish Horde Hunt's Logic
     icirrus_city()
     for i in range(6):
         # sweet_scent()

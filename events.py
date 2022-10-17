@@ -49,6 +49,7 @@ def route216():
 #### HORDES ####
 def teleport():
     pyautogui.press('z')
+    # TODO: Sleep
     return
 
 
@@ -64,8 +65,10 @@ def icirrus_city():
     teleport()
     heal_unova() # Heal
     playActions('recordings\DRAGONSPRIAL.json') # Get into position
-
     return
+
+
+# TODO: Add more Horde Replays
 
 
 #### FISHING ####
