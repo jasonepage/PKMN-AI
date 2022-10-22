@@ -11,10 +11,10 @@ def initializePyAutoGUI():
     pyautogui.FAILSAFE = True
 
 
-def countdownTimer():
+def countdownTimer(seconds: int):
     # Countdown timer
     print("Starting", end="", flush=True)
-    for i in range(0, 3):
+    for i in range(0, seconds):
         print(".", end="", flush=True)
         sleep(1)
     print("Go")

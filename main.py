@@ -6,15 +6,18 @@ from huntmethods import singles_hunt, hordes_hunt, fishing_hunt
 
 
 def main():
-    countdownTimer()
+    countdownTimer(3)
     initializePyAutoGUI()
     p1 = Process(target=checkForWarnings)
     p1.start()
-    p2 = Process(target=checkForEncounter(0, 'route230'))
+    p2 = Process(target=checkForEncounter('singles', 'petalburg_woods'))
     p2.start()
 
 
 def checkForWarnings():
+    """
+    Checks for any warnings that appear on the screen. Ex: Shiny, Disconnect, Captcha
+    """
     while True:
         captcha_warning = pyautogui.locateCenterOnScreen('images\Events\pop_up.PNG', confidence=0.8)
         disconnect_warning = pyautogui.locateCenterOnScreen('images\Events\pop_up.PNG', confidence=0.8)
@@ -22,19 +25,33 @@ def checkForWarnings():
 
         # Send an alert
         if captcha_warning or disconnect_warning or shiny_warning is not None:
+            print("Warning Detected.")
             warning()
 
 
-def checkForEncounter(method, hunt= None):
-    if method == 0:
+def checkForEncounter(method: str, hunt: str):
+    """
+    Performs BOT actions.
+    """
+    valid_methods = ['singles', 'horde', 'fishing' ]
+    if method not in valid_methods:
+        raise ValueError("Invalid Method.")
+
+    valid_hunts = ['petalburg_woods', 'route230', 'route119', ] # TODO: add more
+    if hunt not in valid_hunts:
+        raise ValueError("Invalid Hunt.")
+
+
+    if method == 'singles':
         singles_hunt(hunt)
 
-    elif method == 1:
+    elif method == 'hordes':
         hordes_hunt(hunt)
 
-    elif method == 2: 
+    elif method == 'fishing': 
         fishing_hunt(hunt)
 
 
 if __name__ == '__main__':
     main()
+    # pyautogui.displayMousePosition()

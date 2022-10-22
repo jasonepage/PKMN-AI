@@ -2,19 +2,23 @@ import pyautogui
 from events import *
 
 
-def singles_hunt(hunt):
+def singles_hunt(hunt: str):
+    """
+    Performs a single encounter hunt. 
+    """
     while True:
-        run_button = pyautogui.locateCenterOnScreen('images/Events/run_button2.PNG', confidence=0.8, region=(0,0, 750, 1500))
-        if hunt is not None:
-            check_location = pyautogui.locateCenterOnScreen(f'images\Hunts\{hunt}.PNG', confidence=0.5)
+        run_button = pyautogui.locateCenterOnScreen('images/Events/run_button.PNG', confidence=0.8, region=(0,0, 750, 1500))
+        check_location = pyautogui.locateCenterOnScreen(f'images\Hunts\{hunt}.PNG', confidence=0.5)
+        img_left = pyautogui.locateCenterOnScreen(f'images\Hunts\{hunt}.PNG', confidence=0.8, region=(1250, 0, 200, 1080))
+        img_right = pyautogui.locateCenterOnScreen(f'images\Hunts\{hunt}.PNG', confidence=0.9, region=(960, 0, 200, 1080))
 
         # Run Away
         if run_button is not None:
             run_Away(run_button)
 
-        # Hunt
+        # Find Encounter
         elif check_location is not None:
-            petalburg_woods()
+            singles(img_left, img_right)
             
         # Wait
         else: 
@@ -22,6 +26,9 @@ def singles_hunt(hunt):
 
 
 def hordes_hunt(hunt):
+    """
+    Performs a horde encounter hunt. 
+    """
     # TODO: Finish Horde Hunt's Logic
     icirrus_city()
     for i in range(6):
@@ -29,16 +36,19 @@ def hordes_hunt(hunt):
 
         run_button = None
         while run_button is None:
-            run_button = pyautogui.locateCenterOnScreen('images/Events/run_button2.PNG', confidence=0.8)
+            run_button = pyautogui.locateCenterOnScreen('images/Events/run_button.PNG', confidence=0.8)
         run_Away(run_button)
 
 
 def fishing_hunt(hunt):
+    """
+    Performs a fishing encounter hunt. 
+    """
     while True:
-        run_button = pyautogui.locateCenterOnScreen('images/Events/run_button2.PNG', confidence=0.8)
+        run_button = pyautogui.locateCenterOnScreen('images/Events/run_button.PNG', confidence=0.8)
         check_location = pyautogui.locateCenterOnScreen(f'images\Hunts\{hunt}.PNG', confidence=0.5)
-        nibble = pyautogui.locateCenterOnScreen('images/Events/nibble.PNG', confidence=0.8)
-        landed = pyautogui.locateCenterOnScreen('images\Events\landed.PNG', confidence=0.8)
+        nibble = pyautogui.locateCenterOnScreen('images/Events/fishing/nibble.PNG', confidence=0.8)
+        landed = pyautogui.locateCenterOnScreen('images/Events/fishing/landed.PNG', confidence=0.8)
 
         # Run away
         if run_button is not None:
