@@ -1,37 +1,41 @@
+from types import NoneType
 import pyautogui
-from utils import add_Encounter, record_OBS, notify_user
+import pyscreeze
+from utils import add_encounter, record_OBS, notify_user
 from playback import playActions
 from time import sleep
-from random import uniform
 
 
 def warning():
+    """
+    Messages the user, captures Replay Buffer clip, and exits the script.
+    """
     notify_user()  # Send a text/call
     record_OBS()  # Capture clip
     exit()
 
 
-def run_Away(button):
+def run_away(button: pyscreeze.Point):
+    """
+    Receives Run Button Coordinates and clicks the coordinates.
+    Moves the user's cursor to the run button coordinates for a split seconds and moves it back.
+    """
+
     current_posiiton = pyautogui.position()
 
-    pyautogui.click(button)  # Clicks run button
-    sleep(0.1)
+    pyautogui.click(button)  # Clicks run button, adds encounter
+    add_encounter(1)
 
     # Move cursor back to original position
+    sleep(0.1)
     pyautogui.moveTo(current_posiiton)
-    add_Encounter()  # Adds encounter to the counter
-    sleep(1.25)  # Waits for animation to end
 
 
 #### SINGLES ####
-def petalburg_woods():
-    pyautogui.keyDown('a')
-    pyautogui.keyDown('d') 
-    sleep(uniform(0.25, 0.5))
-    pyautogui.keyUp('d')
-
-
-def singles(img_left, img_right):
+def singles(img_left: NoneType or pyscreeze.Point, img_right: NoneType or pyscreeze.Point):
+    """
+    Moves the player to the left or right depending on their position in game.
+    """
     if img_left is not None:
         pyautogui.keyDown('d') # Start moving right if user has reached furthest left point
 
@@ -46,6 +50,15 @@ def teleport():
     sleep(2)
 
 
+def sweet_scent():
+    pyautogui.press('x')
+    sleep(1)
+
+
+def replenish_leppa():
+    pyautogui.press('e')
+
+
 def heal_unova():
     playActions('recordings\pokecenter_unova.json')
     pokecenter_unova = None
@@ -56,7 +69,7 @@ def heal_unova():
 
 def icirrus_city():
     teleport()
-    heal_unova() # Heal
+    heal_unova()
     playActions('recordings\DRAGONSPRIAL.json') # Get into position
 
 

@@ -19,9 +19,9 @@ def checkForWarnings():
     Checks for any warnings that appear on the screen. Ex: Shiny, Disconnect, Captcha
     """
     while True:
-        captcha_warning = pyautogui.locateCenterOnScreen('images\Events\pop_up.PNG', confidence=0.8)
-        disconnect_warning = pyautogui.locateCenterOnScreen('images\Events\pop_up.PNG', confidence=0.8)
-        shiny_warning = pyautogui.locateCenterOnScreen('images\Events\pop_up.PNG', confidence=0.8)
+        captcha_warning = pyautogui.locateCenterOnScreen('images\Events\captcha_warning.PNG', confidence=0.8)
+        disconnect_warning = pyautogui.locateCenterOnScreen('images\Events\disconnect_warning.PNG', confidence=0.8)
+        shiny_warning = pyautogui.locateCenterOnScreen('images\Events\shiny_warning.PNG', confidence=0.8)
 
         # Send an alert
         if captcha_warning or disconnect_warning or shiny_warning is not None:
@@ -33,11 +33,11 @@ def checkForEncounter(method: str, hunt: str):
     """
     Performs BOT actions.
     """
-    valid_methods = ['singles', 'horde', 'fishing' ]
+    valid_methods = ['singles', 'hordes', 'fishing' ]
     if method not in valid_methods:
         raise ValueError("Invalid Method.")
 
-    valid_hunts = ['petalburg_woods', 'route230', 'route119', ] # TODO: add more
+    valid_hunts = ['petalburg_woods', 'route230', 'route119', 'driftveil_city', ] # TODO: add more
     if hunt not in valid_hunts:
         raise ValueError("Invalid Hunt.")
 
