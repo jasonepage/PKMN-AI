@@ -1,7 +1,7 @@
 from types import NoneType
 import pyautogui
 import pyscreeze
-from utils import add_encounter, record_OBS, notify_user
+from src.utils import add_encounter, record_OBS, notify_user
 from playback import playActions
 from time import sleep
 

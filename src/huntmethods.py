@@ -1,5 +1,5 @@
 import pyautogui
-from events import *
+from src.events import *
 import json
 
 def singles_hunt(hunt: str):
@@ -28,7 +28,7 @@ def singles_hunt(hunt: str):
             
         # Wait
         else: 
-            pass
+            continue
 
 
 def hordes_hunt(hunt: str):
@@ -59,7 +59,7 @@ def hordes_hunt(hunt: str):
             
             # Wait
             else:
-                pass
+                continue
     
 
 def fishing_hunt(hunt: str):
@@ -89,7 +89,7 @@ def fishing_hunt(hunt: str):
 
         # Wait
         else:
-            pass
+            continue
 
 
 def hatch_eggs():

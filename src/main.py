@@ -1,8 +1,8 @@
 import pyautogui
 from multiprocessing import Process
 from playback import initializePyAutoGUI, countdownTimer
-from events import warning
-from huntmethods import singles_hunt, hordes_hunt, fishing_hunt
+from src.events import warning
+from src.huntmethods import singles_hunt, hordes_hunt, fishing_hunt
 
 
 def main():
