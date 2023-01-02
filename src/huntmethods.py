@@ -1,5 +1,5 @@
 import pyautogui
-from src.events import *
+from events import BotActions
 import json
 
 def singles_hunt(hunt: str):
@@ -20,11 +20,11 @@ def singles_hunt(hunt: str):
 
         # Run Away
         if run_button is not None:
-            run_away(run_button)
+            BotActions.run_away(run_button)
 
         # Find Encounter
         elif check_location is not None:
-            singles(img_left, img_right)
+            BotActions.find_encounter(img_left, img_right)
             
         # Wait
         else: 
@@ -40,22 +40,22 @@ def hordes_hunt(hunt: str):
     while True:
         run_button = pyautogui.locateCenterOnScreen('images/Events/run_button.PNG', confidence=0.8, region=(0,540, 960, 540))
         check_location = pyautogui.locateCenterOnScreen(f'images/Hunts/{hunt}.PNG', confidence=0.5)
-        leppa_replenish = pyautogui.locateCenterOnScreen('images/Events/leppa_replenish.PNG', confidence=0.8)
-        leppa_replenish2 = pyautogui.locateCenterOnScreen('images/Events/leppa_replenish2.PNG', confidence=0.8)
+        leppa_replenish = pyautogui.locateCenterOnScreen('images/Events/leppa/leppa_replenish.PNG', confidence=0.8)
+        leppa_replenish2 = pyautogui.locateCenterOnScreen('images/Events/leppa/leppa_replenish2.PNG', confidence=0.8)
 
         if leppa_replenish or leppa_replenish2 is not None:
-            replenish_leppa()
+            BotActions.replenish_leppa()
 
         elif leppa_replenish is None:
 
             # Run Away
             if run_button is not None:
-                run_away(run_button)
-                add_encounter(5)
+                BotActions.run_away(run_button)
+                BotActions.add_encounter(5)
 
             # Find Encounter
             elif check_location is not None:
-                sweet_scent()
+                BotActions.sweet_scent()
             
             # Wait
             else:
@@ -68,24 +68,24 @@ def fishing_hunt(hunt: str):
     """
     while True:
         run_button = pyautogui.locateCenterOnScreen('images/Events/run_button.PNG', confidence=0.8)
-        check_location = pyautogui.locateCenterOnScreen(f'images\Hunts\{hunt}.PNG', confidence=0.5)
+        check_location = pyautogui.locateCenterOnScreen(f'images/Hunts/{hunt}.PNG', confidence=0.5)
         nibble = pyautogui.locateCenterOnScreen('images/Events/fishing/nibble.PNG', confidence=0.8)
         landed = pyautogui.locateCenterOnScreen('images/Events/fishing/landed.PNG', confidence=0.8)
 
         # Run away
         if run_button is not None:
-            run_away(run_button)
-            add_encounter(1)
+            BotActions.run_away(run_button)
+            BotActions.add_encounter(1)
 
         # Skip
         elif nibble is not None:
-            skip_nibble()
+            BotActions.skip_nibble()
         elif landed is not None:
-            skip_landed()
+            BotActions.skip_landed()
 
         # Fish
         elif check_location is not None:
-            fishing()
+            BotActions.use_fishingrod()
 
         # Wait
         else:
