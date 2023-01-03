@@ -1,7 +1,10 @@
+import sys
 import pyautogui
 from multiprocessing import Process
-from playback import initializePyAutoGUI, countdownTimer
+from PyQt5.QtWidgets import QApplication
 from events import BotActions
+from menu import MyWidget
+from playback import initializePyAutoGUI, countdownTimer
 from huntmethods import singles_hunt, hordes_hunt, fishing_hunt
 
 
@@ -45,12 +48,33 @@ def checkForEncounter(method: str, hunt: str):
 
 
 def main():
-    countdownTimer(3)
+    countdownTimer(1)
     initializePyAutoGUI()
+    print('FAIL-SAFE turned on... Main process starting!')
+
+    app = QApplication(sys.argv)
+    window = MyWidget() # Create an instance of our GUI
+    window.show()
+    sys.exit(app.exec_())
+
     p1 = Process(target=checkForWarnings)
-    p1.start()
-    p2 = Process(target=checkForEncounter('hordes', 'driftveil_city'))
-    p2.start()
+    p2 = Process(target=checkForEncounter(window.combo2.currentText(), window.combo.currentText()))
+
+    print(guwindowi.btn.ischecked())
+    if window.btn.isChecked():
+        # Start
+        p1.start()
+        p2.start()
+    else:
+        # Stop
+        p1.terminate()
+        p1.join()
+        p1.close()
+
+        p2.terminate()
+        p2.join()
+        p2.close()
+        print('Main process exiting!')
 
 
 if __name__ == '__main__':

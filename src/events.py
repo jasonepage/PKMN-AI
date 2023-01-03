@@ -8,7 +8,7 @@ from time import sleep
 
 
 class BotActions:
-    
+
     def __init__(self):
         self.captcha_warning = None
         self.disconnect_warning = None
@@ -16,7 +16,6 @@ class BotActions:
         self.run_button = None
         self.img_left = None
         self.img_right = None
-
         self.lock = Lock()
 
 
