@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>611</width>
+    <height>350</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>50</y>
+     <width>181</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(65, 167, 77)</string>
+   </property>
+   <property name="text">
+    <string>Start Encounters</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>181</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(65, 167, 77)</string>
+   </property>
+   <property name="text">
+    <string>Start Warnings</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_3">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>50</y>
+     <width>181</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(191, 209, 198)</string>
+   </property>
+   <property name="text">
+    <string>Stop Encounters</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_4">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>110</y>
+     <width>181</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(191, 209, 198)</string>
+   </property>
+   <property name="text">
+    <string>Stop Warnings</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>30</y>
+     <width>151</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Hordes</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Singles</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Fishing</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="comboBox_2">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>90</y>
+     <width>151</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>driftveil_city</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>petalburg_woods</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>other</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

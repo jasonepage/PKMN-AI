@@ -47,36 +47,20 @@ def checkForEncounter(method: str, hunt: str):
         fishing_hunt(hunt)
 
 
+
 def main():
     countdownTimer(1)
     initializePyAutoGUI()
-    print('FAIL-SAFE turned on... Main process starting!')
-
-    app = QApplication(sys.argv)
-    window = MyWidget() # Create an instance of our GUI
-    window.show()
-    sys.exit(app.exec_())
+    print('FAIL-SAFE turned on... Main processes starting!')
 
     p1 = Process(target=checkForWarnings)
-    p2 = Process(target=checkForEncounter(window.combo2.currentText(), window.combo.currentText()))
+    p2 = Process(target=checkForEncounter())
 
-    print(guwindowi.btn.ischecked())
-    if window.btn.isChecked():
-        # Start
-        p1.start()
-        p2.start()
-    else:
-        # Stop
-        p1.terminate()
-        p1.join()
-        p1.close()
-
-        p2.terminate()
-        p2.join()
-        p2.close()
-        print('Main process exiting!')
-
+    p1.start()
+    p2.start()
 
 if __name__ == '__main__':
     main()
     # pyautogui.displayMousePosition()
+
+# window.combo2.currentText(), window.combo.currentText()

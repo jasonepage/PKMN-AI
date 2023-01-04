@@ -13,6 +13,7 @@ def singles_hunt(hunt: str):
     # print(location_data[hunt][0].value())
 
     while True:
+        print('Searching for encounter...')
         run_button = pyautogui.locateCenterOnScreen('images/Events/run_button.PNG', confidence=0.8, region=(0,540, 960, 540))
         check_location = pyautogui.locateCenterOnScreen(f'images/Hunts/{hunt}.PNG', confidence=0.5)
         img_left = pyautogui.locateCenterOnScreen(f'images/Hunts/{hunt}.PNG', confidence=0.8, region=(1250, 0, 200, 1080))
