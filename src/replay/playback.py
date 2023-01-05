@@ -4,22 +4,6 @@ import os
 import json
 
 
-def initializePyAutoGUI():
-    # Initialized PyAutoGUI
-    # https://pyautogui.readthedocs.io/en/latest/introduction.html
-    # When fail-safe mode is True, moving the mouse to the upper-left corner will abort your program.
-    pyautogui.FAILSAFE = True
-
-
-def countdownTimer(seconds: int):
-    # Countdown timer
-    print("Starting", end="", flush=True)
-    for i in range(0, seconds):
-        print(".", end="", flush=True)
-        sleep(1)
-    print("Go")
-
-
 def playActions(filename):
     # Determine filename's path, Read the file
     script_dir = os.path.dirname(__file__)

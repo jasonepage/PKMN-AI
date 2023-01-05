@@ -1,8 +1,9 @@
-import sys
-import pyautogui
-from events import BotActions
+from utils import send_warning
 from huntmethods import singles_hunt, hordes_hunt, fishing_hunt
-from PyQt5 import QtCore, QtGui, QtWidgets
+from vision import Vision
+
+import cv2, time
+from PyQt5 import QtCore, QtWidgets
 from PyQt5 import uic
 
 
@@ -10,26 +11,34 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         self.ui = uic.loadUi('threads.ui', self)
-        self.resize(800, 600)
+        self.resize(600, 300)
         # add icon
 
+        # Add Dropdown menu
+        self.combo = QtWidgets.QComboBox(self)
+        self.combo.setGeometry(QtCore.QRect(10, 10, 200, 30))
+        self.combo.setObjectName("Select Location")
+        for location in ['driftveil_city', 'petalburg_woods', 'route230', 'route119']: # TODO: read a file to get locations
+            self.combo.addItem(location)
+
+        # Initialize start/stop buttons
         self.thread = {}
         self.pushButton.clicked.connect(self.start_worker_1)
         self.pushButton_2.clicked.connect(self.start_worker_2)
-        
         self.pushButton_3.clicked.connect(self.stop_worker_1)
         self.pushButton_4.clicked.connect(self.stop_worker_2)
 
     def start_worker_1(self):
-        self.thread[1] = ThreadClass(parent=None, index=1)
+        location = self.combo.currentText() # get location from combobox
+        self.thread[1] = ThreadClass(parent=None, index=1, location=location)
         self.thread[1].start()
-        self.thread[1].any_signal.connect(self.checkForEncounter('singles', 'petalburg_woods'))
+        self.thread[1].any_signal.connect(self.my_funciton)
         self.pushButton.setEnabled(False)
 
     def start_worker_2(self):
         self.thread[2] = ThreadClass(parent=None, index=2)
         self.thread[2].start()
-        self.thread[2].any_signal.connect(self.checkForWarnings)
+        self.thread[2].any_signal.connect(self.my_funciton)
         self.pushButton_2.setEnabled(False)
 
     def stop_worker_1(self):
@@ -40,57 +49,26 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.thread[2].stop()
         self.pushButton_2.setEnabled(True)
 
-    def checkForWarnings(self):
-        """
-        Checks for any warnings that appear on the screen. Ex: Shiny, Disconnect, Captcha
-        """  
-        while True:
-            captcha_warning = pyautogui.locateCenterOnScreen('images/Events/captcha_warning.PNG', confidence=0.8)
-            disconnect_warning = pyautogui.locateCenterOnScreen('images/Events/disconnect_warning.PNG', confidence=0.8)
-            shiny_warning = pyautogui.locateCenterOnScreen('images/Events/shiny_warning.PNG', confidence=0.8)
-
-            # Send an alert
-            print('Checking for warnings...')
-            if captcha_warning or disconnect_warning or shiny_warning is not None:
-                print("Warning Detected.")
-                BotActions.warning()
-
-    def checkForEncounter(self, method: str, hunt: str):
-        """
-        Performs BOT actions.
-        """
-        valid_methods = ['singles', 'hordes', 'fishing' ]
-        if method not in valid_methods:
-            raise ValueError("Invalid Method.")
-
-        valid_hunts = ['petalburg_woods', 'route230', 'route119', 'driftveil_city', ]
-        if hunt not in valid_hunts:
-            raise ValueError("Invalid Hunt.")
-
-        if method == 'singles':
-            singles_hunt(hunt)
-
-        elif method == 'hordes':
-            hordes_hunt(hunt)
-
-        elif method == 'fishing': 
-            fishing_hunt(hunt)
+    def my_funciton(self):
+        print('Starting my function')
        
-
 
 class ThreadClass(QtCore.QThread):
     any_signal = QtCore.pyqtSignal(int)
 
-    def __init__(self, parent=None, index=0):
+    def __init__(self, parent=None, index=0, location=''):
         super(ThreadClass, self).__init__(parent)
         self.index = index
         self.is_running = True
+        self.location = location
 
     def run(self):
         print("Thread {} started".format(self.index))
-        # self.checkForEncounter('singles', 'petalburg_woods')
-        #self.checkForWarnings()
-
+        if self.index == 1:
+            self.checkForEncounter(self.location)
+        elif self.index == 2:
+            self.checkForWarnings()
+        
     def stop(self):
         self.is_running = False
         print("Thread {} stopped".format(self.index))
@@ -99,42 +77,44 @@ class ThreadClass(QtCore.QThread):
     def checkForWarnings(self):
         """
         Checks for any warnings that appear on the screen. Ex: Shiny, Disconnect, Captcha
-        """  
-        while True:
-            captcha_warning = pyautogui.locateCenterOnScreen('images/Events/captcha_warning.PNG', confidence=0.8)
-            disconnect_warning = pyautogui.locateCenterOnScreen('images/Events/disconnect_warning.PNG', confidence=0.8)
-            shiny_warning = pyautogui.locateCenterOnScreen('images/Events/shiny_warning.PNG', confidence=0.8)
+        """ 
+        vision = Vision()
+        while (True):
+            screen = vision.CaptureImage((0, 40, 800, 640)) # TODO: make this dynamic
+            text = vision.TextFinder(screen).lower()
+            time.sleep(0.5)
 
             # Send an alert
-            print('Checking for warnings...')
-            if captcha_warning or disconnect_warning or shiny_warning is not None:
+            if 'captcha' in text or 'shiny' in text or 'disconnected' in text:
                 print("Warning Detected.")
-                BotActions.warning()
+                send_warning()
+            print("No Warnings Detected.")
 
-    def checkForEncounter(self, method: str, hunt: str):
+            if (True): 
+                continue
+                cv2.imshow('window', cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))
+                if cv2.waitKey(25) & 0xFF == ord('q'):
+                    cv2.destroyAllWindows()
+                    exit()
+
+    def checkForEncounter(self, location: str):
         """
         Performs BOT actions.
         """
-        valid_methods = ['singles', 'hordes', 'fishing' ]
-        if method not in valid_methods:
-            raise ValueError("Invalid Method.")
+        singles_locations = ['petalburg_woods', 'route230', 'route119']
 
-        valid_hunts = ['petalburg_woods', 'route230', 'route119', 'driftveil_city', ]
-        if hunt not in valid_hunts:
+        hordes_locations = ['driftveil_city']
+
+        fishing_locations = []
+
+        if location in singles_locations:
+            singles_hunt(location)
+
+        elif location in hordes_locations:
+            hordes_hunt(location)
+
+        elif location in fishing_locations: 
+            fishing_hunt(location)
+
+        else:
             raise ValueError("Invalid Hunt.")
-
-        if method == 'singles':
-            singles_hunt(hunt)
-
-        elif method == 'hordes':
-            hordes_hunt(hunt)
-
-        elif method == 'fishing': 
-            fishing_hunt(hunt)
-    
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = Ui_MainWindow()
-    window.show()
-    sys.exit(app.exec_())
