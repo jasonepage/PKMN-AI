@@ -1,8 +1,7 @@
-from menu import Ui_MainWindow as MainWindow
-from utils import initializePyAutoGUI
-
 import sys
 from PyQt5.QtWidgets import QApplication
+from menu import Ui_MainWindow as MainWindow
+from utils import initializePyAutoGUI
 
 
 def main():

@@ -1,5 +1,5 @@
 import pyautogui
-from events import *
+from bot_actions import *
 import json
 
 def singles_hunt(location: str):

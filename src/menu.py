@@ -3,7 +3,7 @@ from huntmethods import singles_hunt, hordes_hunt, fishing_hunt
 from vision import Vision
 
 import cv2, time
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5 import uic
 
 
@@ -11,43 +11,43 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         self.ui = uic.loadUi('threads.ui', self)
-        self.resize(600, 300)
+        # self.resize(600, 300)
         # add icon
-
-        # Add Dropdown menu
-        self.combo = QtWidgets.QComboBox(self)
-        self.combo.setGeometry(QtCore.QRect(10, 10, 200, 30))
-        self.combo.setObjectName("Select Location")
-        for location in ['driftveil_city', 'petalburg_woods', 'route230', 'route119']: # TODO: read a file to get locations
-            self.combo.addItem(location)
+        self.setWindowIcon(QtGui.QIcon('images\gui\icon.png'))
+        # set title
+        self.setWindowTitle('PKMN-AI Bot')
 
         # Initialize start/stop buttons
         self.thread = {}
-        self.pushButton.clicked.connect(self.start_worker_1)
-        self.pushButton_2.clicked.connect(self.start_worker_2)
-        self.pushButton_3.clicked.connect(self.stop_worker_1)
-        self.pushButton_4.clicked.connect(self.stop_worker_2)
+        self.start_bot.clicked.connect(self.start_worker_1)
+        self.start_warnings.clicked.connect(self.start_worker_2)
+        self.pause_bot.clicked.connect(self.stop_worker_1)
+        self.pause_warnings.clicked.connect(self.stop_worker_2)
+
+        # Add available locations to combobox
+        for location in ['driftveil_city', 'petalburg_woods', 'route230', 'route119']: # TODO: read a file to get locations
+            self.locations.addItem(location)
 
     def start_worker_1(self):
-        location = self.combo.currentText() # get location from combobox
+        location = self.locations.currentText() # get location from locations combobox
         self.thread[1] = ThreadClass(parent=None, index=1, location=location)
         self.thread[1].start()
         self.thread[1].any_signal.connect(self.my_funciton)
-        self.pushButton.setEnabled(False)
+        self.start_bot.setEnabled(False)
 
     def start_worker_2(self):
         self.thread[2] = ThreadClass(parent=None, index=2)
         self.thread[2].start()
         self.thread[2].any_signal.connect(self.my_funciton)
-        self.pushButton_2.setEnabled(False)
+        self.start_warnings.setEnabled(False)
 
     def stop_worker_1(self):
         self.thread[1].stop()
-        self.pushButton.setEnabled(True)
+        self.start_bot.setEnabled(True)
 
     def stop_worker_2(self):
         self.thread[2].stop()
-        self.pushButton_2.setEnabled(True)
+        self.start_warnings.setEnabled(True)
 
     def my_funciton(self):
         print('Starting my function')
@@ -117,4 +117,4 @@ class ThreadClass(QtCore.QThread):
             fishing_hunt(location)
 
         else:
-            raise ValueError("Invalid Hunt.")
+            raise ValueError("Invalid Hunt. Please select a hunt.")

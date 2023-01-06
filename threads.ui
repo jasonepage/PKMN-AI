@@ -1,131 +1,356 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>PKMN_AI</class>
+ <widget class="QWidget" name="PKMN_AI">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>611</width>
-    <height>350</height>
+    <width>525</width>
+    <height>347</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>525</width>
+    <height>347</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <property name="styleSheet">
+   <string notr="true">*{
+	
+	background-color: rgb(144, 150, 255);
+}
+
+QPushButton {
+	text-align: left;
+	padding: 5px 10px;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}</string>
+  </property>
+  <widget class="QGroupBox" name="verticalGroupBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>50</y>
-     <width>181</width>
-     <height>51</height>
+     <x>120</x>
+     <y>210</y>
+     <width>391</width>
+     <height>121</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(65, 167, 77)</string>
-   </property>
-   <property name="text">
-    <string>Start Encounters</string>
-   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="start_bot">
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(167, 255, 153)</string>
+      </property>
+      <property name="text">
+       <string>Start Bot Thread</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="start_warnings">
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(167, 255, 153)</string>
+      </property>
+      <property name="text">
+       <string>Start Checking for Warnings</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pause_bot">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 134, 134);
+
+background-image: linear-gradient(red, yellow);
+</string>
+      </property>
+      <property name="text">
+       <string>Pause Bot Thread</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pause_warnings">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 134, 134)</string>
+      </property>
+      <property name="text">
+       <string>Stop Checking for Warnings</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QGroupBox" name="gridGroupBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>110</y>
-     <width>181</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(65, 167, 77)</string>
-   </property>
-   <property name="text">
-    <string>Start Warnings</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_3">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>50</y>
-     <width>181</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(191, 209, 198)</string>
-   </property>
-   <property name="text">
-    <string>Stop Encounters</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_4">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>110</y>
-     <width>181</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(191, 209, 198)</string>
-   </property>
-   <property name="text">
-    <string>Stop Warnings</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBox">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
-     <y>30</y>
-     <width>151</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>Hordes</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Singles</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Fishing</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QComboBox" name="comboBox_2">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
+     <x>120</x>
      <y>90</y>
-     <width>151</width>
+     <width>181</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="2" column="0">
+     <widget class="QCheckBox" name="skip_evolution">
+      <property name="text">
+       <string>Skip Evolution</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QCheckBox" name="skip_dialogue">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Skip Dialogue</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QCheckBox" name="payday">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Payday</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QCheckBox" name="catch_shiny">
+      <property name="text">
+       <string>Catch Shiny</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="gridGroupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>90</y>
+     <width>191</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0">
+     <widget class="QCheckBox" name="alert_PM">
+      <property name="text">
+       <string>Alert when Private Messaged</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QCheckBox" name="quit_PM">
+      <property name="text">
+       <string>Quit when Private Messaged</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QComboBox" name="locations">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Select Location</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QCheckBox" name="pause_PM">
+      <property name="text">
+       <string>Pause when Private Messaged</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="verticalGroupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>80</y>
+     <width>91</width>
+     <height>251</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <widget class="QPushButton" name="home">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>images/gui/home-page.png</normaloff>images/gui/home-page.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>48</width>
+        <height>48</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="shield">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>images/gui/shield.png</normaloff>images/gui/shield.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>48</width>
+        <height>48</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="settings">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>images/gui/gear.png</normaloff>images/gui/gear.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>48</width>
+        <height>48</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="about">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>images/gui/help1.png</normaloff>images/gui/help1.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>48</width>
+        <height>48</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="horizontalGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>491</width>
      <height>71</height>
     </rect>
    </property>
-   <item>
-    <property name="text">
-     <string>driftveil_city</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>petalburg_woods</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>other</string>
-    </property>
-   </item>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="menu">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="font">
+       <font>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>images/gui/menu.png</normaloff>images/gui/menu.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>48</width>
+        <height>48</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="Title">
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+        <underline>false</underline>
+        <strikeout>false</strikeout>
+        <kerning>true</kerning>
+       </font>
+      </property>
+      <property name="text">
+       <string>PKMN-AI</string>
+      </property>
+     </widget>
+    </item>
+    <item alignment="Qt::AlignRight">
+     <widget class="QPushButton" name="pfp">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>images/gui/pfp.png</normaloff>images/gui/pfp.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>48</width>
+        <height>48</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
