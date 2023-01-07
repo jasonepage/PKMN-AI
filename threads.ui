@@ -37,10 +37,10 @@ QPushButton {
   <widget class="QGroupBox" name="verticalGroupBox">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>210</y>
-     <width>391</width>
-     <height>121</height>
+     <x>110</x>
+     <y>200</y>
+     <width>401</width>
+     <height>131</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -92,10 +92,10 @@ background-image: linear-gradient(red, yellow);
   <widget class="QGroupBox" name="gridGroupBox">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>90</y>
-     <width>181</width>
-     <height>111</height>
+     <x>110</x>
+     <y>80</y>
+     <width>191</width>
+     <height>121</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
@@ -138,10 +138,10 @@ background-image: linear-gradient(red, yellow);
   <widget class="QGroupBox" name="gridGroupBox_2">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>90</y>
-     <width>191</width>
-     <height>111</height>
+     <x>300</x>
+     <y>80</y>
+     <width>211</width>
+     <height>121</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_3">
@@ -311,7 +311,7 @@ background-image: linear-gradient(red, yellow);
       </property>
      </widget>
     </item>
-    <item>
+    <item alignment="Qt::AlignLeft">
      <widget class="QLabel" name="Title">
       <property name="font">
        <font>
@@ -327,6 +327,25 @@ background-image: linear-gradient(red, yellow);
       </property>
       <property name="text">
        <string>PKMN-AI</string>
+      </property>
+     </widget>
+    </item>
+    <item alignment="Qt::AlignLeft">
+     <widget class="QLabel" name="encounters">
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+        <underline>false</underline>
+        <strikeout>false</strikeout>
+        <kerning>true</kerning>
+       </font>
+      </property>
+      <property name="text">
+       <string>Encounters: 0</string>
       </property>
      </widget>
     </item>

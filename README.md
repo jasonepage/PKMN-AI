@@ -2,7 +2,7 @@
 
 # PKMN-AI
 
-PKMN-AI is an AI bot that automates the process of playing Pokemon. The script will observe the user's main output device and automatically begin playing the game. It utilizes computer vision to play through the game and recognize specific Pokemon encounters, which is beneficial for maintaining encounter metrics and data for shiny hunters.
+PKMN-AI is an AI that automates the process of playing Pokemon. The script will observe the user's main output device and automatically begin playing the game. It utilizes computer vision and OCR text recognition to play the game and recognize specific Pokemon encounters, which is beneficial for maintaining encounter metrics and data for players.
 
 # Features
 
@@ -19,9 +19,9 @@ macOS/Windows 10+
 
 # Compatability & Expectations
 
-> The AI must be able to recognize the HP (hit points) Bar on the screen to enter a counting state and track the encounter (no widgets or windows can block the HP Bar).
+> The AI must be able to recognize the text on the screen (small text/fancy fonts may hinder the script).
 
-> The AI works best on fullscreen mode; however, the user can replace the 'hp_img.png' file with their needle image to recognize encounters.
+> The AI must be played on Windowed Mode, but it can be played on any resolution. It cannot be played on Fullscreen Mode (the script can't video capture the game window on Fullscreen Mode).
 
 # Installation
 
@@ -33,3 +33,5 @@ macOS/Windows 10+
 3. Run main.py; create a shortcut if desired.
 
 # Contact & Support
+
+Having Issues? Create a Ticket/Issue here: [Issues](https://github.com/jasonepage/PKMN-AI/issues)

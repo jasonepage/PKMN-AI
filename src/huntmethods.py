@@ -1,11 +1,16 @@
-import pyautogui
-from bot_actions import *
+import pyautogui, time
+from utils import add_encounter, get_window_dimensions, find_window
+from vision import Vision
+from bot_actions import Bot
 import json
+
 
 def singles_hunt(location: str):
     """
     Performs a single encounter hunt. 
     """
+    bot = Bot()
+    vision = Vision()
     with open("location_data.json", 'r') as f:  # get location data
         location_data = json.load(f)
     # TODO: Print the correct image coordinates
@@ -18,12 +23,12 @@ def singles_hunt(location: str):
 
         # Run Away
         if run_button is not None:
-            run_away(run_button)
+            bot.run_away(run_button)
             add_encounter(1)
             
         # Find Encounter
         elif check_location is not None:
-            find_encounter(img_left, img_right)
+            bot.find_encounter(img_left, img_right)
             
         # Wait
         else:
@@ -35,36 +40,65 @@ def hordes_hunt(location: str):
     """
     Performs a horde encounter hunt. 
     """
+    bot = Bot()
+    vision = Vision()
     while True:
-        run_button = pyautogui.locateCenterOnScreen('images/Events/run_button.PNG', confidence=0.8)
-        check_location = pyautogui.locateCenterOnScreen(f'images/Hunts/{location}.PNG', confidence=0.5)
-        leppa_replenish = pyautogui.locateCenterOnScreen('images/Events/leppa/leppa_replenish.PNG', confidence=0.8)
-        leppa_replenish2 = pyautogui.locateCenterOnScreen('images/Events/leppa/leppa_replenish2.PNG', confidence=0.8)
+        check_location = pyautogui.locateCenterOnScreen(f'images/Hunts/{location}.PNG', confidence=0.8)
+        pokeMMO = get_window_dimensions(find_window("РokеMМO"))
+        screen = vision.CaptureImage(pokeMMO)
+        data = vision.TextData(screen)
 
-        # Replenish Leppa Berries
-        if leppa_replenish or leppa_replenish2 is not None:
-            replenish_leppa()
+        # Split the data into lines
+        lines = data.split('\n')
 
-        # Run Away
-        elif run_button is not None:
-            print('Run Button Found...')
-            run_away(run_button)
-            add_encounter(5)
+        # Extract the header row from the lines
+        header = lines[0].split()
 
-        # Find Encounter
-        elif check_location is not None:
-            sweet_scent()
-        
+        # Find the index of the "left" and "top" columns
+        left_index = header.index('left')
+        top_index = header.index('top')
+
+        # Iterate through the lines
+        for line in lines[1:]:
+            # Split the line into words
+            words = line.split()
+            
+            # If the line is empty, skip it
+            if len(words) == 0:
+                continue
+            
+            # Get the word and its coordinates
+            word = words[-1]
+            # if the word isn't run, or sweet, or replenish, then skip it
+            if word.lower() != 'run' and word.lower() != 'sweet' and word.lower() != 'replenish':
+                continue
+
+            left = words[left_index]
+            top = words[top_index]
+
+            # if the word is "run", then click the coordinates
+            if word.lower() == 'run':
+                bot.run_away((int(left), int(top)))
+                add_encounter(1)
+
+            # if the dialogue has "PP" or "Replenish", then press "E"
+            if word.lower() == 'sweet' or word.lower() == 'replenish':
+                print(word, 'leppa')
+                bot.replenish_leppa()
+            
         # Wait
         else:
+            time.sleep(0.5)
             print('No checkpoint location found.')
             continue
-    
+        
 
 def fishing_hunt(location: str):
     """
     Performs a fishing encounter hunt. 
     """
+    bot = Bot()
+    vision = Vision()
     while True:
         run_button = pyautogui.locateCenterOnScreen('images/Events/run_button.PNG', confidence=0.8)
         check_location = pyautogui.locateCenterOnScreen(f'images/Hunts/{location}.PNG', confidence=0.5)
@@ -73,18 +107,18 @@ def fishing_hunt(location: str):
 
         # Run away
         if run_button is not None:
-            run_away(run_button)
+            bot.run_away(run_button)
             add_encounter(1)
 
         # Skip
         elif nibble is not None:
-            skip_nibble()
+            bot.skip_nibble()
         elif landed is not None:
-            skip_landed()
+            bot.skip_landed()
 
         # Fish
         elif check_location is not None:
-            use_fishingrod()
+            bot.use_fishingrod()
     
         # Wait
         else:

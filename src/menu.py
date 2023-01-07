@@ -1,8 +1,8 @@
-from utils import send_warning
+from utils import send_warning, get_window_dimensions, find_window
 from huntmethods import singles_hunt, hordes_hunt, fishing_hunt
 from vision import Vision
 
-import cv2, time
+import cv2, time, json
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5 import uic
 
@@ -24,7 +24,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.pause_bot.clicked.connect(self.stop_worker_1)
         self.pause_warnings.clicked.connect(self.stop_worker_2)
 
-        # Add available locations to combobox
+        # Set the initial encounters equal to encounters1.json
+        with open('encounters/encounters1.json', 'r') as f:
+            encounters = json.load(f)
+        self.encounters.setText('Encounters: ' + str(encounters['encounters']))
+
+        # Add available locations to selection combobox
         for location in ['driftveil_city', 'petalburg_woods', 'route230', 'route119']: # TODO: read a file to get locations
             self.locations.addItem(location)
 
@@ -58,6 +63,7 @@ class ThreadClass(QtCore.QThread):
 
     def __init__(self, parent=None, index=0, location=''):
         super(ThreadClass, self).__init__(parent)
+        self.DEBUG = True
         self.index = index
         self.is_running = True
         self.location = location
@@ -80,18 +86,19 @@ class ThreadClass(QtCore.QThread):
         """ 
         vision = Vision()
         while (True):
-            screen = vision.CaptureImage((0, 40, 800, 640)) # TODO: make this dynamic
+            pokeMMO = get_window_dimensions(find_window("РokеMМO"))
+            screen = vision.CaptureImage(pokeMMO)
             text = vision.TextFinder(screen).lower()
             time.sleep(0.5)
 
             # Send an alert
             if 'captcha' in text or 'shiny' in text or 'disconnected' in text:
                 print("Warning Detected.")
+                continue
                 send_warning()
             print("No Warnings Detected.")
 
-            if (True): 
-                continue
+            if self.DEBUG: 
                 cv2.imshow('window', cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
