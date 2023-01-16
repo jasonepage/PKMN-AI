@@ -1,8 +1,8 @@
-from utils import send_warning, get_window_dimensions, find_window
-from huntmethods import singles_hunt, hordes_hunt, fishing_hunt
+from utils import send_warning, add_encounter
 from vision import Vision
+from bot_actions import Bot
 
-import cv2, time, json
+import cv2, time, json, pyautogui
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5 import uic
 
@@ -10,11 +10,8 @@ from PyQt5 import uic
 class Ui_MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
-        self.ui = uic.loadUi('threads.ui', self)
-        # self.resize(600, 300)
-        # add icon
+        self.ui = uic.loadUi('PKMN-AI.ui', self)
         self.setWindowIcon(QtGui.QIcon('images\gui\icon.png'))
-        # set title
         self.setWindowTitle('PKMN-AI Bot')
 
         # Initialize start/stop buttons
@@ -29,21 +26,21 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             encounters = json.load(f)
         self.encounters.setText('Encounters: ' + str(encounters['encounters']))
 
-        # Add available locations to selection combobox
-        for location in ['driftveil_city', 'petalburg_woods', 'route230', 'route119']: # TODO: read a file to get locations
-            self.locations.addItem(location)
+        # Add available hunts to selection combobox
+        for hunt in ['singles', 'hordes', 'fishing']: # TODO: read a file to get single encounter hunts
+            self.hunts.addItem(hunt)
 
     def start_worker_1(self):
-        location = self.locations.currentText() # get location from locations combobox
-        self.thread[1] = ThreadClass(parent=None, index=1, location=location)
+        hunt = self.hunts.currentText() # get hunt from hunts combobox
+        self.thread[1] = ThreadClass(parent=None, index=1, hunt=hunt)
         self.thread[1].start()
-        self.thread[1].any_signal.connect(self.my_funciton)
+        self.thread[1].any_signal.connect(self.my_function)
         self.start_bot.setEnabled(False)
 
     def start_worker_2(self):
         self.thread[2] = ThreadClass(parent=None, index=2)
         self.thread[2].start()
-        self.thread[2].any_signal.connect(self.my_funciton)
+        self.thread[2].any_signal.connect(self.my_function)
         self.start_warnings.setEnabled(False)
 
     def stop_worker_1(self):
@@ -54,24 +51,26 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.thread[2].stop()
         self.start_warnings.setEnabled(True)
 
-    def my_funciton(self):
-        print('Starting my function')
+    def my_function(self):
+        print('Starting threaded function.')
        
 
 class ThreadClass(QtCore.QThread):
     any_signal = QtCore.pyqtSignal(int)
 
-    def __init__(self, parent=None, index=0, location=''):
+    def __init__(self, parent=None, index=0, hunt=''):
         super(ThreadClass, self).__init__(parent)
-        self.DEBUG = True
+        self.DEBUG = False
         self.index = index
         self.is_running = True
-        self.location = location
+        self.hunt_method = hunt
+        self.timer = 60
+        self.battle_action = 'run'
 
     def run(self):
         print("Thread {} started".format(self.index))
         if self.index == 1:
-            self.checkForEncounter(self.location)
+            self.find_encounters()
         elif self.index == 2:
             self.checkForWarnings()
         
@@ -83,45 +82,106 @@ class ThreadClass(QtCore.QThread):
     def checkForWarnings(self):
         """
         Checks for any warnings that appear on the screen. Ex: Shiny, Disconnect, Captcha
+        Ran on a separate thread to prevent the bot from stopping.
         """ 
         vision = Vision()
+
         while (True):
-            pokeMMO = get_window_dimensions(find_window("РokеMМO"))
-            screen = vision.CaptureImage(pokeMMO)
-            text = vision.TextFinder(screen).lower()
-            time.sleep(0.5)
+            screen = vision.get_screenshot()
+            text = vision.find_text(screen).lower()
 
             # Send an alert
             if 'captcha' in text or 'shiny' in text or 'disconnected' in text:
                 print("Warning Detected.")
-                continue
                 send_warning()
-            print("No Warnings Detected.")
+            else:
+                print("No Warnings Detected.")
 
+            # Displays the DEBUG Window
             if self.DEBUG: 
                 cv2.imshow('window', cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
                     exit()
 
-    def checkForEncounter(self, location: str):
+    def find_encounters(self):
         """
         Performs BOT actions.
+        Ran on a separate thread to prevent the BOT from getting stuck.
         """
-        singles_locations = ['petalburg_woods', 'route230', 'route119']
+        bot = Bot()
+        vision = Vision()
+        start_time = time.time()
+        
+        while (time.time() - start_time) < (self.timer * 60) or (self.timer == None): # while the timer hasn't expired
+            screen = vision.get_screenshot()
+            text = vision.find_text(screen)
 
-        hordes_locations = ['driftveil_city']
+            if self.battle_action == 'run':
+                if 'run' in text.lower() or 'ru' in text.lower():
+                    # get the coordinates of the "run" text
+                    run_button = vision.find_word_coordinates(screen, 'run')
+                    pyautogui.click(run_button)
+                    add_encounter(1)
 
-        fishing_locations = []
+                else:
+                    print('No button found...')
+                    elapsed_time = time.time() - start_time
+                    if elapsed_time > 2:
+                        if self.hunt_method == 'singles':
+                            bot.find_single_encounters(0.5)
 
-        if location in singles_locations:
-            singles_hunt(location)
+                        elif self.hunt_method == 'hordes':
+                            bot.sweet_scent()
 
-        elif location in hordes_locations:
-            hordes_hunt(location)
+                        elif self.hunt_method == 'fishing':
+                            bot.use_fishingrod()
 
-        elif location in fishing_locations: 
-            fishing_hunt(location)
+                        else:
+                            print('Invalid hunt method')
+                            break                  
+                        elapsed_time = 0
+                        start_time = time.time()
+                
 
-        else:
-            raise ValueError("Invalid Hunt. Please select a hunt.")
+            elif self.battle_action == 'fight':
+                if 'fight' in text.lower():
+                    # get the coordinates of the "fight" text
+                    fight_button = vision.find_word_coordinates(screen, 'fight')
+                    pyautogui.click(fight_button)
+                    time.sleep(1)
+                    pyautogui.click(fight_button) # clicks the attacking move
+                else:
+                    print('No button found...')
+                    elapsed_time = time.time() - start_time
+                    if elapsed_time > 2:
+                        
+
+                        elapsed_time = 0
+                        start_time = time.time()
+
+            elif self.battle_action == 'catch':
+                if 'bag' in text.lower():
+                    # get the coordinates of the "catch" text
+                    bag_button = vision.find_word_coordinates(screen, 'catch')
+                    pyautogui.click(bag_button)
+                    
+                    # TODO: Add a function to select a pokeball
+                    # get the coordinates of the pokeball text
+                    pokeball_button = vision.find_word_coordinates(screen, 'pokeball')
+                    pyautogui.click(pokeball_button)
+                else:
+                    print('No button found...')
+                    elapsed_time = time.time() - start_time
+                    if elapsed_time > 2:
+                        if self.hunt_method == 'singles':
+                            bot.find_single_encounters(0.5)
+                        elif self.hunt_method == 'hordes':
+                            bot.sweet_scent()
+                        elif self.hunt_method == 'fishing':
+                            bot.use_fishingrod()
+                        else:
+                            print('Invalid hunt method')
+                            break  
+                        elapsed_time = 0
+                        start_time = time.time()

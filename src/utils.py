@@ -2,39 +2,6 @@ import json
 from time import sleep
 from twilio.rest import Client
 import pyautogui
-import win32gui
-
-
-def enum_callback1(hwnd, window_list):
-    window_list.append((hwnd, win32gui.GetWindowText(hwnd)))
-
-
-def enum_callback(hwnd, window_list):
-    window_list.append(hwnd)
-
-
-def find_window(title):
-    window_list = []
-    win32gui.EnumWindows(enum_callback, window_list)
-    for hwnd in window_list:
-        if win32gui.GetWindowText(hwnd) == title:
-            return hwnd
-    return None
-
-
-def find_windows():
-    window_list = []
-    win32gui.EnumWindows(enum_callback1, window_list)
-    return window_list
-
-
-def get_window_dimensions(hwnd):
-    rect = win32gui.GetWindowRect(hwnd)
-    left = rect[0]
-    top = rect[1]
-    width = rect[2] - left
-    height = rect[3] - top
-    return left, top, width, height
 
 
 def initializePyAutoGUI():
@@ -104,8 +71,3 @@ def notify_user():
                                from_=myTwilioNumber,
                                url="http://demo.twilio.com/docs/voice.xml")
 
-
-if __name__ == "__main__":
-    print(find_windows())
-    hwnd = find_window("РokеMМO")
-    print(hwnd)
