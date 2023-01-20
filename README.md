@@ -1,5 +1,7 @@
 ![gui](images/gui.PNG)
 
+![debug](images/debug.png)
+
 # PKMN-AI
 
 PKMN-AI is an AI that automates the process of playing Pokemon. The script will observe the user's main output device and automatically begin playing the game. It utilizes computer vision and OCR text recognition to play the game and recognize specific Pokemon encounters, which is beneficial for maintaining encounter metrics and data for players.
