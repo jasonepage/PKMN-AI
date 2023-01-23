@@ -60,7 +60,7 @@ class ThreadClass(QtCore.QThread):
 
     def __init__(self, parent=None, index=0, hunt=''):
         super(ThreadClass, self).__init__(parent)
-        self.DEBUG = False
+        self.DEBUG = True
         self.index = index
         self.is_running = True
         self.hunt_method = hunt
@@ -85,7 +85,7 @@ class ThreadClass(QtCore.QThread):
         Ran on a separate thread to prevent the bot from stopping.
         """ 
         vision = Vision()
-
+        start_time = time.time()
         while (True):
             screen = vision.get_screenshot()
             text = vision.find_text(screen).lower()
@@ -99,6 +99,14 @@ class ThreadClass(QtCore.QThread):
 
             # Displays the DEBUG Window
             if self.DEBUG: 
+                # Put boxes around where text is recognized
+                x, y, w, h = vision.find_text_boxes(screen)
+                cv2.rectangle(screen, (x, y), (x - w, y - h), (0, 0, 255), 2)
+                cv2.putText(screen, text, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+
+                if (time.time() - start_time) > 5 and (time.time() - start_time) < 7:
+                    cv2.imwrite('debug.png', screen)
+
                 cv2.imshow('window', cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()

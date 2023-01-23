@@ -60,3 +60,14 @@ class Vision:
             # if the word is "run", then click the coordinates
             if word.lower() == keyword:
                 return (int(left), int(top)) # x, y coordinates
+
+    def find_text_boxes(self, img):
+        """
+        Returns the coordinates of text boxes in an image.
+        """
+        boxes = pytesseract.image_to_boxes(img)
+        for b in boxes.splitlines():
+            b = b.split(' ')
+            x, y, w, h = int(b[1]), int(b[2]), int(b[3]), int(b[4])
+
+        return x, y, w, h
