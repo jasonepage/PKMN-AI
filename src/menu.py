@@ -112,76 +112,43 @@ class ThreadClass(QtCore.QThread):
         bot = Bot()
         vision = Vision()
         start_time = time.time()
-        
-        while (time.time() - start_time) < (self.timer * 60) or (self.timer == None): # while the timer hasn't expired
+        last_run_button = time.time()
+        BOT_STATE = 'HUNTING' # 'HUNTING' or 'IN_BATTLE'
+
+        while (time.time() - start_time) < (self.timer * 60): # while the timer hasn't expired
             screen = vision.get_screenshot()
+            screen = cv2.resize(screen, (0,0), fx=0.5, fy=0.5)
             text = vision.find_text(screen)
 
-            if self.battle_action == 'run':
-                if 'run' in text.lower() or 'ru' in text.lower():
-                    # get the coordinates of the "run" text
-                    run_button = vision.find_word_coordinates(screen, 'run')
-                    pyautogui.click(run_button)
-                    add_encounter(1)
+            if self.battle_action == 'run' and 'run' in text.lower():
+                print('Running Away...')
+                run_button = vision.find_word_coordinates(screen, 'run')
+                pyautogui.click(run_button)
+                add_encounter(1)
+            if self.battle_action == 'fight' and 'fight' in text.lower():
+                fight_button = vision.find_word_coordinates(screen, 'fight')
+                pyautogui.click(fight_button)
+                time.sleep(0.5)
+                pyautogui.click(fight_button) # Click the first attacking move
+            if 'nibble' in text.lower() or 'sweet scent' in text.lower() or 'pp' in text.lower() or 'replenish' in text.lower() or 'landed' in text.lower() or 'another' in text.lower():
+                bot.skip_dialogue()
 
-                else:
-                    print('No button found...')
-                    elapsed_time = time.time() - start_time
-                    if elapsed_time > 2:
-                        if self.hunt_method == 'singles':
-                            bot.find_single_encounters(0.5)
 
-                        elif self.hunt_method == 'hordes':
-                            bot.sweet_scent()
+            if time.time() - last_run_button > 15:
+                cv2.imwrite('error.PNG', screen)
+                print(text)
 
-                        elif self.hunt_method == 'fishing':
-                            bot.use_fishingrod()
+            elapsed_time = time.time() - start_time
+            screen = None
+            if elapsed_time > 2 and BOT_STATE == 'HUNTING':
+                if self.hunt_method == 'singles':
+                    bot.find_single_encounters(0.5)
+                elif self.hunt_method == 'hordes':
+                    bot.sweet_scent()
+                elif self.hunt_method == 'fishing':
+                    bot.use_fishingrod()              
+                elapsed_time = 0
+                start_time = time.time()
 
-                        else:
-                            print('Invalid hunt method')
-                            break                  
-                        elapsed_time = 0
-                        start_time = time.time()
-                
-
-            elif self.battle_action == 'fight':
-                if 'fight' in text.lower():
-                    # get the coordinates of the "fight" text
-                    fight_button = vision.find_word_coordinates(screen, 'fight')
-                    pyautogui.click(fight_button)
-                    time.sleep(1)
-                    pyautogui.click(fight_button) # clicks the attacking move
-                else:
-                    print('No button found...')
-                    elapsed_time = time.time() - start_time
-                    if elapsed_time > 2:
-                        
-
-                        elapsed_time = 0
-                        start_time = time.time()
-
-            elif self.battle_action == 'catch':
-                if 'bag' in text.lower():
-                    # get the coordinates of the "catch" text
-                    bag_button = vision.find_word_coordinates(screen, 'catch')
-                    pyautogui.click(bag_button)
-                    
-                    # TODO: Add a function to select a pokeball
-                    # get the coordinates of the pokeball text
-                    pokeball_button = vision.find_word_coordinates(screen, 'pokeball')
-                    pyautogui.click(pokeball_button)
-                else:
-                    print('No button found...')
-                    elapsed_time = time.time() - start_time
-                    if elapsed_time > 2:
-                        if self.hunt_method == 'singles':
-                            bot.find_single_encounters(0.5)
-                        elif self.hunt_method == 'hordes':
-                            bot.sweet_scent()
-                        elif self.hunt_method == 'fishing':
-                            bot.use_fishingrod()
-                        else:
-                            print('Invalid hunt method')
-                            break  
-                        elapsed_time = 0
-                        start_time = time.time()
+        print("Timer Expired.")
+            

@@ -46,7 +46,6 @@ class Vision:
         for line in lines[1:]:
             # Split the line into words
             words = line.split()
-            print(words)
 
             # If the line is empty, skip it
             if len(words) == 0:

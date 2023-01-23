@@ -38,16 +38,16 @@ QPushButton {
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>370</y>
+     <y>310</y>
      <width>401</width>
-     <height>121</height>
+     <height>181</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QPushButton" name="start_bot">
       <property name="styleSheet">
-       <string notr="true">background-color:rgb(167, 255, 153)</string>
+       <string notr="true">background-color: rgb(46, 125, 52);</string>
       </property>
       <property name="text">
        <string>Start Bot Thread</string>
@@ -57,7 +57,7 @@ QPushButton {
     <item>
      <widget class="QPushButton" name="start_warnings">
       <property name="styleSheet">
-       <string notr="true">background-color:rgb(167, 255, 153)</string>
+       <string notr="true">background-color: rgb(46, 125, 52);</string>
       </property>
       <property name="text">
        <string>Start Checking for Warnings</string>
@@ -92,9 +92,9 @@ background-image: linear-gradient(red, yellow);
   <widget class="QGroupBox" name="radioButtons">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>250</y>
-     <width>91</width>
+     <x>110</x>
+     <y>200</y>
+     <width>211</width>
      <height>121</height>
     </rect>
    </property>
@@ -131,10 +131,10 @@ background-image: linear-gradient(red, yellow);
   <widget class="QGroupBox" name="alerts">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>250</y>
-     <width>101</width>
-     <height>121</height>
+     <x>320</x>
+     <y>200</y>
+     <width>191</width>
+     <height>111</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_3">
@@ -145,17 +145,17 @@ background-image: linear-gradient(red, yellow);
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QCheckBox" name="pause_PM">
-      <property name="text">
-       <string>Pause on PM</string>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="0">
      <widget class="QCheckBox" name="quit_PM">
       <property name="text">
        <string>Quit on PM</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QCheckBox" name="pause_PM">
+      <property name="text">
+       <string>Pause on PM</string>
       </property>
      </widget>
     </item>
@@ -213,7 +213,7 @@ background-image: linear-gradient(red, yellow);
     <item>
      <widget class="QPushButton" name="home">
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string/>
@@ -388,8 +388,8 @@ background-image: linear-gradient(red, yellow);
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>250</y>
-     <width>211</width>
+     <y>80</y>
+     <width>401</width>
      <height>121</height>
     </rect>
    </property>
@@ -443,7 +443,7 @@ background-image: linear-gradient(red, yellow);
     <item row="2" column="0">
      <widget class="QComboBox" name="hunts">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
+       <string notr="true"/>
       </property>
       <item>
        <property name="text">
