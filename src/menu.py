@@ -119,14 +119,17 @@ class ThreadClass(QtCore.QThread):
         """
         bot = Bot()
         vision = Vision()
+
         start_time = time.time()
-        last_run_button = time.time()
-        BOT_STATE = 'HUNTING' # 'HUNTING' or 'IN_BATTLE'
+        screen = vision.get_screenshot()
+        text = vision.find_text(screen).lower()
 
         while (time.time() - start_time) < (self.timer * 60): # while the timer hasn't expired
-            screen = vision.get_screenshot()
-            screen = cv2.resize(screen, (0,0), fx=0.5, fy=0.5)
-            text = vision.find_text(screen)
+            # take a screenshot every 1 second
+            if (time.time() - start_time) % 1 == 0:
+                screen = vision.get_screenshot()
+                screen = cv2.resize(screen, (0,0), fx=0.5, fy=0.5)
+                text = vision.find_text(screen)
 
             if self.battle_action == 'run' and 'run' in text.lower():
                 print('Running Away...')
@@ -141,14 +144,8 @@ class ThreadClass(QtCore.QThread):
             if 'nibble' in text.lower() or 'sweet scent' in text.lower() or 'pp' in text.lower() or 'replenish' in text.lower() or 'landed' in text.lower() or 'another' in text.lower():
                 bot.skip_dialogue()
 
-
-            if time.time() - last_run_button > 15:
-                cv2.imwrite('error.PNG', screen)
-                print(text)
-
             elapsed_time = time.time() - start_time
-            screen = None
-            if elapsed_time > 2 and BOT_STATE == 'HUNTING':
+            if elapsed_time > 2:
                 if self.hunt_method == 'singles':
                     bot.find_single_encounters(0.5)
                 elif self.hunt_method == 'hordes':
