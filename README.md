@@ -1,5 +1,3 @@
-![gui](images/gui.PNG)
-
 ![debug](images/debug.png)
 
 # PKMN-AI
